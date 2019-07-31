@@ -1,9 +1,10 @@
 import exampleVideoData from '../data/exampleVideoData.js';
 import VideoListEntry from './VideoListEntry.js'
   var VideoList = (props) => (
+
     <div className="video-list">
     {props.videos.map((ele) =>(
-      <VideoListEntry video={ele}/>
+      <VideoListEntry video={ele} clickTrack={props.clickTrack}/>
     ))}
   </div>
   );
@@ -16,8 +17,6 @@ import VideoListEntry from './VideoListEntry.js'
 VideoList.propTypes = {
   videos: React.PropTypes.array.isRequired
 };
-console.log(VideoList.propTypes)
-
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope.
 // `var` declarations will only exist globally where explicitly defined.
