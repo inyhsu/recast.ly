@@ -3,6 +3,7 @@ import VideoList from './VideoList.js';
 import VideoListEntry from './VideoListEntry.js';
 import VideoPlayer from './VideoPlayer.js';
 import searchYouTube from '../lib/searchYouTube.js';
+import Search from './Search.js';
 import YOUTUBE_API_KEY from '../config/youtube.js';
 
 class App extends React.Component {
@@ -12,7 +13,7 @@ class App extends React.Component {
     this.state = {
       video:exampleVideoData[0],
       videos:exampleVideoData,
-      inputVal: undefined
+      inputVal: ''
     }
   }
 
@@ -20,17 +21,15 @@ class App extends React.Component {
     this.setState({video: event})
   }
 
-  // componentDidMount() {
-  //   if(this.state.inputVal !== undefined){
-  //     searchYouTube({ key: YOUTUBE_API_KEY, query: this.state.inputVal, max: 5}, (data) => {
-  //       console.log('helloooo', data)
-  //     })
-  //   }
+  // componentDidMount(){
+  //   searchYouTube({ key: YOUTUBE_API_KEY, query:'cat', max: 5}, (data) => {
+  //     console.log(data);
+  //     this.setState({videos:data, video:data[0]})
+  //   })
   // }
-
   handleSubmit(event) {
-    // alert('A name was submitted: ' + this.state.inputVal);
-    event.preventDefault();
+
+    console.log(this.state.inputVal)
     searchYouTube({ key: YOUTUBE_API_KEY, query: this.state.inputVal, max: 5}, (data) => {
       this.setState({videos:data})
     })
@@ -39,7 +38,7 @@ class App extends React.Component {
 
   onChange(event){
     event.preventDefault();
-    this.setState({inputVal: event.target.value})
+    this.setState({inputVal: event.target.value}, this.handleSubmit.bind(this));
   }
 
   render(){
@@ -47,16 +46,11 @@ class App extends React.Component {
       <div>
     <nav className="navbar">
       <div className="col-md-6 offset-md-3">
-        <div><h5><em>search</em> view goes here</h5></div>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <input className="searchQuery" type="text" value={this.state.inputVal} onChange= {this.onChange.bind(this)}></input>
-          <input type="submit" value="Submit" />
-        </form>
+        <Search handleSubmit={this.handleSubmit.bind(this)} onChange={this.onChange.bind(this)} value={this.state.inputVal}/>
       </div>
     </nav>
     <div className="row">
       <div className="col-md-7">
-        <div><h5><em >videoPlayer</em> view goes here</h5></div>
         <VideoPlayer video={this.state.video}/>
       </div>
       <div className="col-md-5">
